@@ -1,6 +1,6 @@
 import pygame
 import random
-from constants import ASTEROID_MIN_RADIUS
+from constants import ASTEROID_MIN_RADIUS, SCREEN_WIDTH, SCREEN_HEIGHT
 from circleshape import CircleShape
 
 class Asteroid(CircleShape):
@@ -13,17 +13,32 @@ class Asteroid(CircleShape):
     def update(self, dt):
         self.position += self.velocity * dt
 
+        if self.position.x > SCREEN_WIDTH + self.radius and self.velocity.x > 0:
+            self.position.x = 0 - self.radius
+        elif self.position.x < 0 - self.radius and self.velocity.x < 0:
+            self.position.x = SCREEN_WIDTH + self.radius
+        
+        if self.position.y > SCREEN_HEIGHT + self.radius and self.velocity.y > 0:
+            self.position.y = 0 - self.radius
+        elif self.position.y < 0 - self.radius and self.velocity.y < 0:
+            self.position.y = SCREEN_HEIGHT + self.radius
+        
+
     def split(self):
         self.kill()
+
         if self.radius <= ASTEROID_MIN_RADIUS:
             return
+        
         random_angle = random.uniform(20, 50)
 
         v1 = self.velocity.rotate(random_angle)
         v2 = self.velocity.rotate(-random_angle)
-        
+
         self.radius -= ASTEROID_MIN_RADIUS
-        clockwise_split_asteroid = Asteroid(self.position.x, self.position.y, self.radius)
-        clockwise_split_asteroid.velocity = v1 * 1.2
-        anticlockwise_split_asteroid = Asteroid(self.position.x, self.position.y, self.radius)
-        anticlockwise_split_asteroid.velocity = v2 * 1.2
+
+        asteroid = Asteroid(self.position.x, self.position.y, self.radius)
+        asteroid.velocity = v1 * 1.2
+
+        asteroid = Asteroid(self.position.x, self.position.y, self.radius)
+        asteroid.velocity = v2 * 1.2
