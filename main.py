@@ -39,10 +39,10 @@ def main():
             if player.colides_with(asteroid):
                 print("Game over!")
                 sys.exit()
-                
+
             for shot in shots:
                 if shot.colides_with(asteroid):
-                    asteroid.kill()
+                    asteroid.split()
                     shot.kill()
 
         for obj in drawable:
