@@ -6,7 +6,8 @@ from circleshape import CircleShape
 class Asteroid(CircleShape):
     def __init__(self, x, y, radius):
         super().__init__(x, y, radius)        
-    
+        self.hp = 0
+
     def draw(self, screen):
         pygame.draw.circle(screen, "white", self.position, self.radius, 2)
 
@@ -25,20 +26,32 @@ class Asteroid(CircleShape):
         
 
     def split(self):
-        self.kill()
-
-        if self.radius <= ASTEROID_MIN_RADIUS:
-            return
+        self.hp -=1
+        if self.hp == 0:
+            self.kill()
+    
+            if self.radius <= ASTEROID_MIN_RADIUS:
+                return
         
-        random_angle = random.uniform(20, 50)
+            random_angle = random.uniform(20, 50)
 
-        v1 = self.velocity.rotate(random_angle)
-        v2 = self.velocity.rotate(-random_angle)
+            v1 = self.velocity.rotate(random_angle)
+            v2 = self.velocity.rotate(-random_angle)
 
-        self.radius -= ASTEROID_MIN_RADIUS
+            self.radius -= ASTEROID_MIN_RADIUS
 
-        asteroid = Asteroid(self.position.x, self.position.y, self.radius)
-        asteroid.velocity = v1 * 1.2
+            asteroid = Asteroid(self.position.x, self.position.y, self.radius)
+            asteroid.velocity = v1 * 1.2
+            asteroid.calculate_hp(self.radius)
 
-        asteroid = Asteroid(self.position.x, self.position.y, self.radius)
-        asteroid.velocity = v2 * 1.2
+            asteroid = Asteroid(self.position.x, self.position.y, self.radius)
+            asteroid.velocity = v2 * 1.2
+            asteroid.calculate_hp(self.radius)
+    
+    def calculate_hp(self, radius):
+        if radius <= 20:
+            self.hp = 1
+        elif radius > 20 and self.radius <= 40:
+            self.hp = 2
+        else:
+            self.hp = 4
