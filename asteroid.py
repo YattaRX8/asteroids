@@ -55,3 +55,4 @@ class Asteroid(CircleShape):
             self.hp = 2
         else:
             self.hp = 4
+            

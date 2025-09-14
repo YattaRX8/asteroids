@@ -36,10 +36,15 @@ class Player(CircleShape):
             self.rotate(-dt)
         if keys[pygame.K_d]:
             self.rotate(dt)
-        if keys[pygame.K_w]:
+        if keys[pygame.K_w] and not keys[pygame.K_s]:
             self.move(dt)
-        if keys[pygame.K_s]:
-                self.move(-dt)
+        if keys[pygame.K_s] and not keys[pygame.K_w]:
+            self.move(-dt)
+        if (
+            keys[pygame.K_w] and keys[pygame.K_s]
+            or not keys[pygame.K_w] and not keys [pygame.K_s]
+        ):
+            self.current_speed = 0
         if keys[pygame.K_SPACE]:
             if self.shoot_cooldown <= 0:
                 self.shoot()
@@ -72,4 +77,3 @@ class Player(CircleShape):
         shot = Shot(a[0], a[1])
         shot.velocity = pygame.Vector2(0,1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
         self.shoot_cooldown = PLAYER_SHOOT_COOLDOWN
-
