@@ -22,4 +22,3 @@ class Shot(CircleShape):
             self.position.y < 0 - self.radius
         ):
             self.kill()
-            

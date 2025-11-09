@@ -6,8 +6,9 @@ dist/
 wheels/
 *.egg-info
 .python-version
-pyproject.toml
 
 # Virtual environments
-.venv
-uv.lock
+/.venv
+
+# Logger
+game_state.jsonl
